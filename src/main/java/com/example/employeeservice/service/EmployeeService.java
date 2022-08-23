@@ -5,10 +5,10 @@ import com.example.employeeservice.model.Employee;
 import java.util.List;
 
 public interface EmployeeService {
-    public List<Employee> getAllEmployees();
-    public Employee saveEmployee(Employee employee);
-    public Employee getEmployeeById(String id);
-    public void deleteEmployeeById(String id);
-    public Employee updateEmployee(String id, Employee employee);
-    void deleteAllEmployees();
+     List<Employee> getAllEmployees();
+     Employee saveEmployee(Employee employee);
+     Employee getEmployeeById(String id);
+     void deleteEmployeeById(String id);
+     Employee updateEmployee(String id, Employee employee);
+     void deleteAllEmployees();
 }
