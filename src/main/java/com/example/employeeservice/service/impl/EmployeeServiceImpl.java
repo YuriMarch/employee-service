@@ -6,12 +6,14 @@ import com.example.employeeservice.repository.EmployeeRepository;
 import com.example.employeeservice.service.EmployeeService;
 import com.example.employeeservice.validator.EmployeeValidator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
@@ -29,6 +31,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new BusinessValidationException(validationErrors);
         }
         employeeRepository.save(employee);
+        log.info("Employee successfully created.");
         return employee;
     }
 
@@ -40,6 +43,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void deleteEmployeeById(String id) {
         employeeRepository.deleteById(id);
+        log.info("Employee successfully deleted.");
     }
 
     @Override
@@ -57,13 +61,14 @@ public class EmployeeServiceImpl implements EmployeeService {
                 throw new BusinessValidationException(validationErrors);
             }
             employeeRepository.save(empl);
+            log.info("Employee successfully updated.");
         });
         return employee;
     }
-
     @Override
     public void deleteAllEmployees() {
         employeeRepository.deleteAll();
+        log.info("All employees were deleted.");
     }
 }
 

@@ -2,6 +2,7 @@ package com.example.employeeservice.controller;
 
 import com.example.employeeservice.model.Employee;
 import com.example.employeeservice.service.EmployeeService;
+import com.example.employeeservice.service.PromotionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,7 +11,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,6 +22,7 @@ import java.util.List;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
+    private final PromotionService promotionService;
 
     @GetMapping("/employees")
     @Operation(summary = "Get all employees", responses = {
@@ -32,7 +36,7 @@ public class EmployeeController {
     @Operation(summary = "Save new employee", responses = {
             @ApiResponse(description = "Employee successfully saved ", responseCode = "201", content = @Content(mediaType = "application/json", schema= @Schema(implementation = Employee.class))),
             @ApiResponse(description = "Employee not saved", responseCode = "409", content = @Content)})
-    public Employee saveEmployee(@RequestBody Employee employee) {
+    public Employee saveEmployee(@Valid @RequestBody Employee employee) {
         return employeeService.saveEmployee(employee);
     }
 
@@ -56,8 +60,15 @@ public class EmployeeController {
     @Operation(summary = "Update employee by ID", responses = {
             @ApiResponse(description = "Employee successfully updated ", responseCode = "200", content = @Content(mediaType = "application/json", schema= @Schema(implementation = Employee.class))),
             @ApiResponse(description = "Employee not found", responseCode = "404", content = @Content)})
-    public Employee updateEmployee(@PathVariable String id, @RequestBody Employee employee) {
+    public Employee updateEmployee(@PathVariable String id, @Valid @RequestBody Employee employee) {
         return employeeService.updateEmployee(id, employee);
+    }
+
+    @PutMapping("/employees/{id}/promote")
+    @Operation(summary = "Promote employee", responses = {
+            @ApiResponse(description = "Employee successfully promoted ", responseCode = "200", content = @Content(mediaType = "application/json", schema= @Schema(implementation = Employee.class)))})
+    public Optional<Employee> promoteEmployee(@PathVariable String id){
+        return promotionService.promoteEmployee(id);
     }
 
     @DeleteMapping("/employees")

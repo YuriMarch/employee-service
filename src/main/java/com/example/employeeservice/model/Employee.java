@@ -1,6 +1,7 @@
 package com.example.employeeservice.model;
 
 import com.example.employeeservice.enums.Seniority;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -14,6 +15,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 @Document(collection = "employee")
 public class Employee {
 
@@ -33,9 +35,11 @@ public class Employee {
     @NotBlank
     private String phoneNumber;
 
-    @NotBlank
+    @NotNull
     private Seniority seniority;
 
     @NotBlank
     private String jobTitle;
+
+    private Paycheck paycheck;
 }
