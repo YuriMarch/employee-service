@@ -42,4 +42,6 @@ public class Employee {
     private String jobTitle;
 
     private Paycheck paycheck;
+
+    private boolean isPaycheckPaid = false;
 }

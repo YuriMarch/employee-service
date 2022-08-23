@@ -1,8 +1,6 @@
 package com.example.employeeservice.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Data
 @ToString
@@ -11,7 +9,7 @@ public class Paycheck {
 
     private Integer hoursWorked;
     private Double hourlyRate;
-    private boolean isPaycheckPaid = false;
+//    private boolean isPaycheckPaid = false;
 }
 
 

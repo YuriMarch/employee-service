@@ -2,6 +2,7 @@ package com.example.employeeservice.controller;
 
 import com.example.employeeservice.model.Employee;
 import com.example.employeeservice.service.EmployeeService;
+import com.example.employeeservice.service.PaymentService;
 import com.example.employeeservice.service.PromotionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,14 +18,15 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping
+@RequestMapping("/employees")
 @Tag(name="Employee")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
     private final PromotionService promotionService;
+    private final PaymentService paymentService;
 
-    @GetMapping("/employees")
+    @GetMapping
     @Operation(summary = "Get all employees", responses = {
             @ApiResponse(description = "Get all employees success ", responseCode = "200", content = @Content(mediaType = "application/json", schema= @Schema(implementation = Employee.class))),
             @ApiResponse(description = "Bad request", responseCode = "400", content = @Content)})
@@ -32,7 +34,7 @@ public class EmployeeController {
         return employeeService.getAllEmployees();
     }
 
-    @PostMapping("/employees")
+    @PostMapping
     @Operation(summary = "Save new employee", responses = {
             @ApiResponse(description = "Employee successfully saved ", responseCode = "201", content = @Content(mediaType = "application/json", schema= @Schema(implementation = Employee.class))),
             @ApiResponse(description = "Employee not saved", responseCode = "409", content = @Content)})
@@ -40,7 +42,7 @@ public class EmployeeController {
         return employeeService.saveEmployee(employee);
     }
 
-    @GetMapping("/employees/{id}")
+    @GetMapping("/{id}")
     @Operation(summary = "Get employee by ID", responses = {
             @ApiResponse(description = "Get employee success ", responseCode = "200", content = @Content(mediaType = "application/json", schema= @Schema(implementation = Employee.class))),
             @ApiResponse(description = "Employee not found", responseCode = "404", content = @Content)})
@@ -48,7 +50,7 @@ public class EmployeeController {
         return employeeService.getEmployeeById(id);
     }
 
-    @DeleteMapping("/employees/{id}")
+    @DeleteMapping("/{id}")
     @Operation(summary = "Delete employee by ID", responses = {
             @ApiResponse(description = "Employee successfully deleted", responseCode = "204"),
             @ApiResponse(description = "Employee not found", responseCode = "404", content = @Content)})
@@ -56,7 +58,7 @@ public class EmployeeController {
         employeeService.deleteEmployeeById(id);
     }
 
-    @PutMapping("/employees/{id}")
+    @PutMapping("/{id}")
     @Operation(summary = "Update employee by ID", responses = {
             @ApiResponse(description = "Employee successfully updated ", responseCode = "200", content = @Content(mediaType = "application/json", schema= @Schema(implementation = Employee.class))),
             @ApiResponse(description = "Employee not found", responseCode = "404", content = @Content)})
@@ -64,14 +66,21 @@ public class EmployeeController {
         return employeeService.updateEmployee(id, employee);
     }
 
-    @PutMapping("/employees/{id}/promote")
+    @PutMapping("/promote/{id}")
     @Operation(summary = "Promote employee", responses = {
             @ApiResponse(description = "Employee successfully promoted ", responseCode = "200", content = @Content(mediaType = "application/json", schema= @Schema(implementation = Employee.class)))})
     public Optional<Employee> promoteEmployee(@PathVariable String id){
         return promotionService.promoteEmployee(id);
     }
 
-    @DeleteMapping("/employees")
+    @PutMapping("/pay/{id}")
+    @Operation(summary = "Pay employee", responses = {
+            @ApiResponse(description = "Employee successfully paid ", responseCode = "200", content = @Content(mediaType = "application/json", schema= @Schema(implementation = Employee.class)))})
+    public Optional<Employee> payEmployee(@PathVariable String id){
+        return paymentService.payEmployee(id);
+    }
+
+    @DeleteMapping
     @Operation(summary = "Delete all employees", responses = {
             @ApiResponse(description = "All employees successfully deleted", responseCode = "204"),
             @ApiResponse(description = "Bad request", responseCode = "400", content = @Content)})
